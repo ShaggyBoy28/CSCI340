@@ -13,7 +13,7 @@ using namespace std;
 // Add code for genRndNums
 void genRndNums(vector<int> &v)
 {
-	for (int i = 0; i < v; ++i) 
+	for (int i = 0; i < 200; ++i) 
 	{
             v[i] = LOW + (rand() % HIGH);
         }		
@@ -33,6 +33,7 @@ void printVec(const vector<int> &v)
 			count = 0;
 		}
 	}
+	cout << endl;
 }
 
 int main() 
@@ -42,7 +43,7 @@ int main()
 // Generate random numbers to fill vector v	
 	genRndNums(VEC_SIZE);
 // Using STL sort sort v
-	sort(VEC_SIZE.begin, VEC_SIZE.end);	
+	sort(VEC_SIZE.begin(), VEC_SIZE.end());	
 // Print vector of sorted random numbers
 	printVec(VEC_SIZE);
 	return 1;
