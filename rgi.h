@@ -2,7 +2,8 @@
 #define H_RGI // same const value as for ifndef directive
 
 // Add needed header files here ..
-
+void genRndNums(vector<int> &v)
+void printVec(const vector<int> &v)
 // You need to implement these two functions ...
 // void genRndNums(vector<int> &v);
 // void printVec(const vector<int> &v);
