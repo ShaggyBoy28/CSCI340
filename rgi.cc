@@ -1,3 +1,4 @@
+#include <vector>
 #include "rgi.h"
 
 // Add needed constants
