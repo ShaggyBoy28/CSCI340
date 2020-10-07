@@ -1,0 +1,137 @@
+// Car.java
+public class Car {
+private String license;
+private int numberOfMoves;
+
+public Car( String license )
+{
+this.license = license;
+}
+
+public String getLicense() {
+return license;
+}
+
+public int getNumberOfMoves() {
+return numberOfMoves;
+}
+
+public void movedOutTemporarily()
+{
+numberOfMoves++;
+}
+}
+
+
+// Garage.java
+import java.util.ArrayList;
+import java.util.List;
+
+
+public class Garage {
+private List<Car> laneSpaces;
+private int garageSize;
+
+public Garage(int size) {
+laneSpaces = new ArrayList<Car>(size);
+garageSize = size;
+}
+
+public boolean arrive(String license) {
+if( laneSpaces.size() == garageSize )
+{
+return false;
+}
+laneSpaces.add(new Car(license));
+return true;
+}
+
+public Car depart(String license) {
+// Find car in the garage.
+int foundIndex = -1;
+for( int index = 0; (index < laneSpaces.size()) && (foundIndex < 0) ; index++ )
+{
+if( laneSpaces.get(index).getLicense().equals(license) )
+{
+foundIndex = index;
+}
+}
+
+if( foundIndex < 0 )
+{
+// Car not found.
+return null;
+}
+
+for( int index = 0; index < foundIndex; index++ )
+{
+laneSpaces.get(index).movedOutTemporarily();
+}
+return laneSpaces.remove(foundIndex);
+}
+}
+
+
+// GarageCarTest.java
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.PrintWriter;
+
+public class GarageCartest {
+public static void main(String[] args) throws Exception {
+if( args.length < 2 )
+{
+throw new Exception( "Usage: inputFileName outputFileName");
+}
+Garage g = new Garage(10);
+
+PrintWriter pw = new PrintWriter( new FileWriter(args[1]));
+BufferedReader br = new BufferedReader( new FileReader( args[0] ));
+String oneRecord = br.readLine();
+int lineCount = 1;
+while( oneRecord != null )
+{
+String tokens[] = oneRecord.split(" ");
+if( tokens.length != 2 )
+{
+System.err.println("Invalid record at line(" + lineCount + "): \"" + oneRecord + "\"");
+}
+
+String license = tokens[0];
+boolean arrival = tokens[1].equals("A");
+if( arrival )
+{
+pw.print(oneRecord);
+pw.print(": ");
+boolean didArrive = g.arrive(license);
+if( didArrive )
+{
+pw.println("parked");
+}
+else
+{
+pw.println("turned away");
+}
+}
+else
+{
+pw.print(oneRecord);
+pw.print(": ");
+Car c = g.depart(license);
+if( c == null )
+{
+pw.println("not in the garage");
+}
+else
+{
+pw.println("departs after having moved " + c.getNumberOfMoves() + " time(s).");
+}
+}
+oneRecord = br.readLine();
+lineCount++;
+}
+pw.flush();
+pw.close();
+}
+}
